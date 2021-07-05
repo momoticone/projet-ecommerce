@@ -8,74 +8,61 @@
         <div class="menuTopAdmin">
             <div class="col-12">
                 <h1>Administration</h1>
-            
             </div>
         </div>
     </div>
 
     <div class="row divHomePageAdmin">
         {% include "admin/shared/_sidebar_admin.html.twig" %}
-
-            <div class="col-9 mt-4 ">
-                {% include "admin/shared/_messages_flash.html.twig" %}
-                    <div class="col-12">
-                        <div class="card ">
-                            <div class="card-header text-dark d-flex align-items-center justify-content-between">
-                                <h3>Les catégories</h3>
-                                <a href="{{ path('create_category')}}" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i>
-                                    Créer
-                                </a>    
-                            </div>
-                            <div class="card-body text-dark">
-                                {% if categories | length > 0 %}
-                                    <tabble class="table table-hover">
-                                        <thead>
-                                            <th>Nom</th>
-                                            <th></th>
-                                            <th></th>
-                                        </thead>
-                                        <tbody>
-                                            {% for category in categories %}
-                                                <tr>
-                                                    <td class="d-flex align-items-center imageTable">
-                                                        {% if category.imageUrl is same as null %}
-                                                            <img class='img-table'src="{{ asset('images/image_default.jpg') }}" alt="image category">
-                                                        {% else %}
-                                                            <img class='img-table'src="{{ category.imageUrl}}" alt="image category">
-                                                        {% endif %}
-                                                
-                                                        {{ category.name}}
-                                                    </td>
-                                                    <td>
-                                                        <a class="btn btn-sm btn-info" href={{ path('edit_category',{'id' : category.id}) }}><i class="fas fa-pen"></i>Modifier</a>
-                                                    </td>
-                                                     <td>
-                                                        <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash"></i>Supprimer</a>
-                                                    </td>
-                                                </tr>
-                                                
-                                            {% endfor %}
-                                        </tbody>
-                                    </tabble>
-                                
-                                {% else %}
-                                    <p class="card-text">
-                                        Aucune categorie n'est enregistré
-                                    </p>
-                                {% endif %}
-                            
-                            </div>
-
-                        </div>
-                    
+        <div class="col-9 mt-4">
+            {% include "admin/shared/_messages_flash.html.twig" %}
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h3>Les catégories</h3>
+                        <a class="btn btn-primary" href="{{ path('create_category') }}">
+                            <i class="fas fa-plus"></i> Créer
+                        </a>
                     </div>
-
+                    <div class="card-body">
+                        {% if categories | length > 0 %}
+                            <table class="table table-hover">
+                                <thead>
+                                    <th>Nom</th>
+                                    <th></th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    {% for category in categories %}
+                                        <tr>
+                                            <td class="d-flex align-items-center imageTable">
+                                            {% if category.imageUrl is same as null %}
+                                                <img src="{{ asset('images/image_defaut.jpg') }}" alt="image catégorie" />
+                                            {% else %}
+                                                <img src="{{ asset( category.imageUrl ) }}" alt="image catégorie" />
+                                            {% endif %}
+                                                <p>{{ category.name }}</p>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-info btnTable" href="{{ path('edit_category',{ 'id' : category.id }) }}" ><i class="fas fa-pen"></i> Modifier</a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-danger btnTable"><i class="fas fa-trash"></i> Supprimer</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            
+                            </table>
+                        {% else %}
+                            <p class="card-text">Aucune catégorie n'est enregistrée.</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+        
+        </div>
     </div>
-
-
-
 </div>
 
 {% endblock %}

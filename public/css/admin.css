@@ -4,7 +4,6 @@
 
 .sideBarAdmin {
   border-right: 2px solid black;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +11,6 @@
 
 .sideBarAdmin a {
   text-decoration: none;
-  color: black;
 }
 
 .menuTopAdmin {
@@ -23,6 +21,7 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .menuTopAdmin p {
   font-size: 18px !important;
 }
@@ -48,7 +47,17 @@
   border-top: 1px solid gray;
 }
 
-.img-table {
+.imageTable img {
   height: 50px;
   object-fit: contain;
+}
+
+.imageTable p {
+  margin: 0;
+  margin-left: 20px;
+}
+
+.btnTable {
+  top: 8px;
+  position: relative;
 }

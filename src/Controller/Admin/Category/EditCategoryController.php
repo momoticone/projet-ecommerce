@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Controller\Admin\Category;
 
@@ -11,65 +11,62 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EditCategoryController extends AbstractController
 {
-
     /**
      * @Route("admin/category/edit/{id}", name="edit_category")
      */
+    public function edit($id,Request $request,EntityManagerInterface $em,
+                        CategoryRepository $categoryRepository)
+    {
+        $category = $categoryRepository->find($id);
 
-     public function edit($id, Request $request,EntityManagerInterface $em,
-                            CategoryRepository $categoryRepository)
-     {
-            $category = $categoryRepository->find($id);
+        if(!$category)
+        {
+            $this->addFlash('danger','Cette catégorie n\'existe pas !');
+            return $this->redirectToRoute('list_category');
+        }
 
-            if(!$category)
+        $imageOriginal = $category->getImageUrl();
+
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $image = $form->get('imageUrl')->getData();
+
+            //Je vérifie que l'image existe bel et bien.
+            if($image !== null)
             {
-                $this->addFlash('danger', 'Cette category existe pas');
-                return $this->redirectToRoute('list_category');
-            }
+                $file = md5(uniqid()) . '.' . $image->guessExtension();
 
-            $imageOriginal = $category->getImageUrl();
+                $image->move(
+                    $this->getParameter('app_images_directory'),
+                    $file
+                );
 
-            $form = $this->createForm(CategoryType::class, $category);
+                $category->setImageUrl('/uploads/'. $file);
 
-            $form->handleRequest($request);
-
-            if($form->isSubmitted() && $form->isValid())
-            {
-                $image = $form->get('imageUrl')->getData();
-
-                if($image !== null)
+                //Processus de supression de l'image précédente
+                if($imageOriginal !== null)
                 {
-                    $file = md5(uniqid()).'.'.$image->guessExtension();
-    
-                    $image->move(
-                        $this->getParameter('app_images_directory'),
-                        $file
-                    );
-                    $category->setImageUrl('/upload/'.$file);
-                    
-                    if($imageOriginal !== null)
+                    $fileImageOriginal = $this->getParameter('app_images_directory') . '/..' . $imageOriginal;
+
+                    if(file_exists($fileImageOriginal))
                     {
-                        $fileImageOriginal = $this->getParameter('app_images_directory'). '/..'. $imageOriginal;
-
-                        if(file_exists($fileImageOriginal))
-                        {
-                            unlink($fileImageOriginal);
-                        }
+                        unlink($fileImageOriginal);
                     }
-    
                 }
-                $em->flush();
-
-                $this->addFlash('succes', 'la categorie'.$category->getName().'a bien ete modifier.');
-                return $this->redirectToRoute('list_category');
-
-
             }
 
-            return $this->render('admin/category/edit_category.html.twig', [
-                'formCategory' => $form->createView()
-            ]);
+            $em->flush();
 
-     }
+            $this->addFlash('success','La catégorie ' . $category->getName() . ' a bien été modifié.');
+            return $this->redirectToRoute('list_category');
+        }
 
+        return $this->render('admin/category/edit_category.html.twig',[
+            'formCategory' => $form->createView()
+        ]);
+    }
 }
