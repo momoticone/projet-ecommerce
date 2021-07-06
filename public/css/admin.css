@@ -61,3 +61,15 @@
   top: 8px;
   position: relative;
 }
+
+@media screen and (max-width: 980px) {
+  .versionDesktop {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 982px) {
+  .versionPhone {
+    display: none;
+  }
+}

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin\Category;
 
 use App\Form\CategoryType;
+use App\MesServices\ImageServices\DeleteImageService;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ class EditCategoryController extends AbstractController
      * @Route("admin/category/edit/{id}", name="edit_category")
      */
     public function edit($id,Request $request,EntityManagerInterface $em,
-                        CategoryRepository $categoryRepository)
+                        CategoryRepository $categoryRepository,DeleteImageService $deleteImageService)
     {
         $category = $categoryRepository->find($id);
 
@@ -48,15 +49,8 @@ class EditCategoryController extends AbstractController
                 $category->setImageUrl('/uploads/'. $file);
 
                 //Processus de supression de l'image précédente
-                if($imageOriginal !== null)
-                {
-                    $fileImageOriginal = $this->getParameter('app_images_directory') . '/..' . $imageOriginal;
+                $deleteImageService->deleteImage($imageOriginal,$this->getParameter('app_images_directory'));
 
-                    if(file_exists($fileImageOriginal))
-                    {
-                        unlink($fileImageOriginal);
-                    }
-                }
             }
 
             $em->flush();
