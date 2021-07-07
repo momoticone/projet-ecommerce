@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+            <div class="col-12 pb-5 pt-5">
+                    <div class="card border-dark mb-3 m-3">
+                        <div class="card-header d-flex justify-content-between">
+                        <h1>Produit</h1>
+                        <a class="btn btn-primary" href={{ path('public_home') }}> Retour</a>
+                        </div>
+                        <div class="card-body">
+                            <h2 class="card-title">{{ product.name |upper}}</h2>
+                            <img src="{{ asset( product.imageUrl ) }}" alt="image produit" />
+                             <p>Description : {{ product.description}}</p>
+                             <p>Category: {{ product.category.name }}</p>
+                             <p>Prix: {{ product.price | amount }}</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+{% endblock %}

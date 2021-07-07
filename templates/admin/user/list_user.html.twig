@@ -1,0 +1,73 @@
+{% extends "admin/base_admin.html.twig" %}
+
+{% block body %}
+
+<div class="adminPage">
+
+    <div class="row">
+        <div class="menuTopAdmin">
+            <div class="col-12">
+                <h1>Administration</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row divHomePageAdmin">
+        {% include "admin/shared/_sidebar_admin.html.twig" %}
+        <div class="col-9 mt-4">
+            {% include "admin/shared/_messages_flash.html.twig" %}
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h3>Les Utilisateur</h3>
+                         <a class="btn btn-primary" href={{ path('create_product') }}>
+                            <i class="fas fa-plus"></i> Créer
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        {% if users | length > 0 %}
+                            {{ knp_pagination_render(users) }}
+                            <div class="table-responsive">
+                             <table class="table table-hover">
+                                <thead>
+                                    <th>Nom</th>
+                                    <th>Prenom</th>
+                                    <th>email</th>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>
+                                                <p>{{ user.lastName }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{{ user.firstName}}</p>
+                                            </td>
+                                            <td>
+                                                <p>{{ user.email}}</p>
+                                            </td>
+                                            
+                                            <td>
+                                                <a class="btn btn-sm btn-info btnTable" href={{ path('show_user',{ 'id' : user.id }) }}><i class="fas fa-eyes"></i> Voir</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            
+                            </table>
+
+                            </div>
+                           
+                            {{ knp_pagination_render(users) }}
+                        {% else %}
+                            <p class="card-text">Aucune Produit n'est enregistrée.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+{% endblock %}

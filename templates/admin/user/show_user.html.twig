@@ -1,0 +1,46 @@
+{% extends "admin/base_admin.html.twig" %}
+
+{% block body %}
+
+<div class="adminPage">
+
+    <div class="row">
+        <div class="menuTopAdmin">
+            <div class="col-12">
+                <h1>Administration</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row divHomePageAdmin">
+        {% include "admin/shared/_sidebar_admin.html.twig" %}
+        <div class="col-9 mt-4">
+            {% include "admin/shared/_messages_flash.html.twig" %}
+                        <div class="col-auto">
+                            
+                        </div>
+            <div class="col-12">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header d-flex justify-content-between">
+                        <h2>Utilisateur</h2>
+                        <a class="btn btn-primary" href={{ path('list_user') }}> Retour</a>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">{{ user.lastName |upper}} {{ user.firstName | capitalize}}</h4>
+                             <p>Email : {{ user.email}}</p>
+                             <p>Numero de telephone: {{ user.phoneNumber}}</p>
+                             <p>Adresse: {{ user.street }} {{ user.city }} {{ user.postalCode }} {{ user.country }}.</p>
+                                
+                                <a class="btn btn-sm btn-info btnTable" href={# {{ path('edit_product',{ 'id' : product.id }) }} #}><i class="fas fa-pen"></i> Modifier</a>
+                                <a class="btn btn-sm btn-danger btnTable" href={#{{ path('product_remove',{ 'id' : product.id }) }}#}><i class="fas fa-trash"></i> Supprimer</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+{% endblock %}
